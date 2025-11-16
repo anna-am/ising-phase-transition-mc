@@ -1,1 +1,9 @@
+# User-specific files
 .vs/
+*.user
+*.pyproj.user
+*.sinLaunch
+
+
+#debug directories
+debug/
