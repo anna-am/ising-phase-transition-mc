@@ -7,3 +7,6 @@
 
 #debug directories
 debug/
+
+#Future features - not ready
+ising_model_core/time_thermalization.py
