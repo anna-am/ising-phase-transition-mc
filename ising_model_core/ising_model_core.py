@@ -66,8 +66,8 @@ while t0 >= t:
 
 	mag = s.sum()
 
-	energy_for_one_mcs = np.zeros(1500)
-	m_for_one_mcs = np.zeros(1500)
+	energy_for_one_mcs = np.zeros(count / 10)
+	m_for_one_mcs = np.zeros(count / 10)
 
 	diff_m = 0
 
@@ -99,8 +99,8 @@ while t0 >= t:
 
 	energy[l] = (en + diff_energy) / (n ** 3)
 	m[l] = abs((mag + diff_m)) / (n ** 3)
-	c[l] = (beta ** 2) * ( (energy_for_one_mcs ** 2).sum() / (1500)  - ((energy_for_one_mcs.sum() / (1500) ) ** 2) ) / (n ** 3) #1.⟨E²⟩ - среднее квадратов энергии ⟨E²⟩ = (E₁² + E₂² + E₃² + ... + Eₙ²) / n,          2. ⟨E⟩² - квадрат средней энергии ⟨E⟩² = [(E₁ + E₂ + E₃ + ... + Eₙ) / n]²
-	chi[l] = beta * ( (m_for_one_mcs ** 2).sum() / (1500)  - ((m_for_one_mcs.sum() / (1500) ) ** 2) ) / (n ** 3)
+	c[l] = (beta ** 2) * ( (energy_for_one_mcs ** 2).sum() / (count / 10)  - ((energy_for_one_mcs.sum() / (count / 10) ) ** 2) ) / (n ** 3) #1.⟨E²⟩ - среднее квадратов энергии ⟨E²⟩ = (E₁² + E₂² + E₃² + ... + Eₙ²) / n,          2. ⟨E⟩² - квадрат средней энергии ⟨E⟩² = [(E₁ + E₂ + E₃ + ... + Eₙ) / n]²
+	chi[l] = beta * ( (m_for_one_mcs ** 2).sum() / (count / 10)  - ((m_for_one_mcs.sum() / (count / 10) ) ** 2) ) / (n ** 3)
 
 	t_for_plot[l] = t0
 	t0 -= tt
