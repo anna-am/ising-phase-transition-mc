@@ -45,7 +45,7 @@ while t0 >= t:
 			for j in range(n):
 				for k in range(n):
 
-					diff_e = 2 * s[i, j, k] * (s[(i - 1) % n, j, k] + s[(i + 1) % n, j, k] + s[i, (j - 1) % n, k] + s[i, (j + 1) % n, k] + s[i, j, (k - 1) % n] + s[i, j, (k + 1) % n])
+					diff_e = 2 * J * s[i, j, k] * (s[(i - 1) % n, j, k] + s[(i + 1) % n, j, k] + s[i, (j - 1) % n, k] + s[i, (j + 1) % n, k] + s[i, j, (k - 1) % n] + s[i, j, (k + 1) % n])
 
 					if diff_e <= 0:
 						a = 1
@@ -66,8 +66,8 @@ while t0 >= t:
 
 	mag = s.sum()
 
-	energy_for_one_mcs = np.zeros(count / 10)
-	m_for_one_mcs = np.zeros(count / 10)
+	energy_for_one_mcs = np.zeros(int(count / 10))
+	m_for_one_mcs = np.zeros(int(count / 10))
 
 	diff_m = 0
 
@@ -77,7 +77,7 @@ while t0 >= t:
 			for j in range(n):
 				for k in range(n):
 
-					diff_e = 2 * s[i, j, k] * (s[(i - 1) % n, j, k] + s[(i + 1) % n, j, k] + s[i, (j - 1) % n, k] + s[i, (j + 1) % n, k] + s[i, j, (k - 1) % n] + s[i, j, (k + 1) % n])
+					diff_e = 2 *J * s[i, j, k] * (s[(i - 1) % n, j, k] + s[(i + 1) % n, j, k] + s[i, (j - 1) % n, k] + s[i, (j + 1) % n, k] + s[i, j, (k - 1) % n] + s[i, j, (k + 1) % n])
 
 					if diff_e <= 0:
 						a = 1
@@ -97,8 +97,8 @@ while t0 >= t:
 			m_for_one_mcs[(v // 10)] = abs(mag + diff_m)
 	
 
-	energy[l] = (en + diff_energy) / (n ** 3)
-	m[l] = abs((mag + diff_m)) / (n ** 3)
+	energy[l] = (energy_for_one_mcs.sum() / int(count / 10) ) / (n ** 3)
+	m[l] = abs((m_for_one_mcs.sum() / int(count / 10))) / (n ** 3)
 	c[l] = (beta ** 2) * ( (energy_for_one_mcs ** 2).sum() / (count / 10)  - ((energy_for_one_mcs.sum() / (count / 10) ) ** 2) ) / (n ** 3) #1.⟨E²⟩ - среднее квадратов энергии ⟨E²⟩ = (E₁² + E₂² + E₃² + ... + Eₙ²) / n,          2. ⟨E⟩² - квадрат средней энергии ⟨E⟩² = [(E₁ + E₂ + E₃ + ... + Eₙ) / n]²
 	chi[l] = beta * ( (m_for_one_mcs ** 2).sum() / (count / 10)  - ((m_for_one_mcs.sum() / (count / 10) ) ** 2) ) / (n ** 3)
 
@@ -114,7 +114,7 @@ fig, axes = plt.subplots(2, 2, figsize=(12, 8))
 
 axes[0,0].plot(t_for_plot, energy, linewidth=2.5)
 axes[0,0].set_xlabel(r'$T$', style) #температура
-axes[0,0].set_ylabel(r'$E$', style) #удельная энергия
+axes[0,0].set_ylabel(r'$e$', style) #удельная энергия
 axes[0,0].yaxis.set_label_coords(-0.03, 1.08)
 axes[0,0].yaxis.label.set(rotation=0, ha='right', va='top')
 axes[0,0].grid(which='major')
@@ -158,12 +158,60 @@ plt.show()
 
 
 
+
+
+#графики для презентации с автоподборкой осей
+
+style = {'size' : 20, 'weight' : 'bold'}
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 8))
+
+axes[0,0].plot(t_for_plot, energy, linewidth=2.5)
+axes[0,0].set_xlabel(r'$T$', style) #температура
+axes[0,0].set_ylabel(r'$e$', style) #удельная энергия
+axes[0,0].yaxis.set_label_coords(-0.03, 1.08)
+axes[0,0].yaxis.label.set(rotation=0, ha='right', va='top')
+axes[0,0].grid(which='major')
+axes[0,0].tick_params(axis='both', which='major', labelsize=16)
+
+
+axes[0,1].plot(t_for_plot, m, linewidth=2.5)
+axes[0,1].set_xlabel(r'$T$', style)
+axes[0,1].set_ylabel(r'$m$', style) #удельная намагниченность
+axes[0,1].yaxis.set_label_coords(-0.03, 1.08)
+axes[0,1].yaxis.label.set(rotation=0, ha='right', va='top')
+axes[0,1].grid(which='major')
+axes[0,1].tick_params(axis='both', which='major', labelsize=16)
+
+
+axes[1,0].plot(t_for_plot, c, linewidth=2.5)
+axes[1,0].set_xlabel(r'$T$', style)
+axes[1,0].set_ylabel(r'$c$', style) #удельная теплоёмкость
+axes[1,0].yaxis.set_label_coords(-0.03, 1.08)
+axes[1,0].yaxis.label.set(rotation=0, ha='right', va='top')
+axes[1,0].grid(which='major')
+axes[1,0].tick_params(axis='both', which='major', labelsize=16)
+
+
+axes[1,1].plot(t_for_plot, chi, linewidth=2.5)
+axes[1,1].set_xlabel(r'$T$', style)
+axes[1,1].set_ylabel(r'$\chi$', style) # удельная магнитная восприимчивость
+axes[1,1].yaxis.set_label_coords(-0.03, 1.08)
+axes[1,1].yaxis.label.set(rotation=0, ha='right', va='top')
+axes[1,1].grid(which='major')
+axes[1,1].tick_params(axis='both', which='major', labelsize=16)
+
+
+plt.tight_layout()
+plt.show()
+
+
 #графики для отчета
 fig, axes = plt.subplots(2, 2, figsize=(12, 8))
 
 axes[0,0].plot(t_for_plot, energy)
 axes[0,0].set_xlabel(r'$T$') #температура
-axes[0,0].set_ylabel(r'$E$') #удельная энергия
+axes[0,0].set_ylabel(r'$e$') #удельная энергия
 axes[0,0].grid(which='major')
 
 axes[0,1].plot(t_for_plot, m)
